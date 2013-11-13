@@ -1,0 +1,59 @@
+/* Front page */
+
+.badge-container {
+	text-align: center;
+	vertical-align: middle;
+}
+
+.badge {
+	height: 380px;
+	width: 100%;
+	background-image: url('gureggu.jpg');
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: auto 380px;
+	border-radius: 5px;
+	display: inline-block;
+}
+
+.links-container {
+	padding: 0;
+}
+
+.links-container li {
+	display: inline-block;
+	// vertical-align: middle;
+	height: 30px;
+}
+
+.links-container a {
+	display: block;
+	width: 100%;
+	font-size: 1.2em;
+	color: #D3D3D3;
+	text-decoration: none;
+	vertical-align: bottom;
+}
+
+.links-container a:hover {
+	color: #000002;
+}
+
+/* Responsive width */
+
+@media (max-width: 600px) {
+	.badge {
+		height: 300px;
+		background-size: auto 300px;
+	}
+
+	.links-container li {
+		width: 23%;
+	}
+}
+
+@media (min-width: 600px) {
+	.links-container li {
+		width: 13%;
+	}
+}

@@ -1,0 +1,14 @@
+        <div class="valign-outer">
+
+            <div class="badge-container valign-inner">
+                <div class="badge"><label class="display-none">{{badge | displayl18n:displayProp}}</label></div>
+
+                <h1>
+                    <span class="badge-romaji text-shadow">{{badge | displayl18n:displayProp}}</span>
+                </h1>
+                <ol class="links-container">
+					<li ng-repeat="link in menu"><a href="{{link.href}}">{{link | displayl18n:displayProp}}</a></li>
+                </ol>
+            </div>
+
+        </div>

@@ -1,0 +1,64 @@
+/* Resume rules */
+
+.resume-head, .resume-body {
+	position: relative;
+	width: 80%;
+	left: 10%;
+}
+
+.resume-head {
+	padding: 20px 0 10px 0;
+}
+
+.resume-head h1 {
+	padding: 0;
+	margin: 0;
+}
+
+.resume-body h2 {
+	float: left;
+	width: 20%;
+	text-align: right;
+}
+
+.resume-body dl {
+	margin: 0;
+	padding: 0 0 20px 20%;
+	width: 80%;
+	border-top: 1px solid Silver;
+}
+
+@media (max-width: 850px) {
+	.resume-head, .resume-body {
+		width: 90%;
+		left: 5%;
+	}
+
+	.resume-body h2 {
+		width: 100%;
+		text-align: left;
+	}
+
+	.resume-body dl {
+		margin: 0;
+		padding-left: 0;
+		width: 100%;
+	}
+}
+
+.resume-body h2 {
+	padding: 21px 0 12px 0;
+	margin: 0;
+	font-size: 1em;
+	text-transform: uppercase;
+}
+
+.resume-body dt {
+	font-weight: Bold;
+	padding-top: 20px;
+}
+
+.resume-body ul {
+	padding: 0;
+	margin: 0;
+}
