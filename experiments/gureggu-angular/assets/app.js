@@ -6,14 +6,14 @@ var guregguApp = angular.module('guregguApp', [
   'ngRoute',
   'guregguControllers'
 ]).filter('displayl18n', function() {
-	return function(input, displayProp) {
-		if (input[displayProp]) {
-			return input[displayProp];
-		} else {
-			// Just default to english
-			return input['displayEn'];
-		}
-	}
+  return function(input, displayProp) {
+    if (input[displayProp]) {
+      return input[displayProp];
+    } else {
+      // Just default to english
+      return input['displayEn'];
+    }
+  }
 });
 
 guregguApp.config(['$routeProvider',
