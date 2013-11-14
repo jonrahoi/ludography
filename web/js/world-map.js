@@ -1,6 +1,9 @@
 
-			function random_color(format){
-				var rint = Math.round(0xffffff * Math.random());
+			function random_color(format, saturation, lightness){
+				var rint = Math.round(0xffffff * Math.random()),
+					sat = saturation || "100%",
+					light = lightness || "50%";
+
 				switch (format)
 				 {
 					case 'hex':
@@ -8,7 +11,10 @@
 		
 					case 'rgb':
 					return 'rgb(' + (rint >> 16) + ',' + (rint >> 8 & 255) + ',' + (rint & 255) + ')';
-		
+
+					case 'hsl':
+					return 'hsl(' + (rint >> 16) + ',' + sat + ',' + light + ')';
+
 					default:
 					return rint;
 					
@@ -76,15 +82,7 @@
 					.attr('id', function(d){return d.properties.name.replace(/\s+/g, '')})
 					.style('fill', 'gray')
 					.style('stroke', 'white')
-					.style('stroke-width', 1)
-					.on("mouseover", function(){d3.select(this)
-				   		.transition()
-				   			.style("fill", "black");
-				   	})
-				   .on("mouseout", function(){d3.select(this)
-				   		.transition()
-				   			.style("fill", "grey");					   
-				   	})
+					.style('stroke-width', 1);
 				
 				/*svg.insert("path", ".graticule")
 					.datum(topojson.feature(world, world.objects.land))
@@ -106,7 +104,7 @@
 
 
 				d3.select(guy).transition().delay(delay)
-				   .style("fill", random_color("rgb"));
+				   .style("fill", random_color("hsl"));
 
 				MakeTimeoutCall(function(n){
 					var fullName = splitCamel(n);
