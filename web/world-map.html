@@ -1,16 +1,27 @@
-<html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<title>World Map</title>
-		
-		<link rel="stylesheet" type="text/css" href="css/world-map.css" media="screen" />
+<html lang="en" ng-app="worldMapApp">
+    <head>
+        <meta charset="utf-8">
+        <title>World Map</title>
+        
+        <link rel="stylesheet" type="text/css" href="css/world-map.css" media="screen" />
 
-	</head>
-	<body>
-	<div id="guyName"></div>
+    </head>
 
-		<script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
-		<script type="text/javascript" src="http://d3js.org/topojson.v1.min.js"></script>
-		<script type="text/javascript" src="js/world-map.js"></script>
-	</body>
+    <body ng-controller="worldMapController">
+        <div id="guyName"></div>
+    </body>
+
+    <!-- libs -->
+    <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
+    <script type="text/javascript" src="http://d3js.org/topojson.v1.min.js"></script>
+    <script src="js/angular.min.js"></script>
+    <script src="js/angular-route.min.js"></script>        
+    <script src="js/angular-animate.min.js"></script>
+
+    <!-- app -->
+    <script type="text/javascript" src="js/world-map.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/controllers.js"></script>
+    <script src="js/animations.js"></script>
+
 </html>
