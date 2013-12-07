@@ -163,6 +163,11 @@ worldMapControllers.controller('worldMapController', ['$scope', '$http',
                 indexOf = $scope.lowercaseNames.indexOf(lowercaseInput),
                 hasAlready = $scope.wonNames.indexOf(lowercaseInput);
 
+            if (answer.length === 0) {
+                // do nothing
+                return;
+            }
+
             if (indexOf > -1 && hasAlready === -1) {
                 doAWin($scope.names[indexOf]);
                 $scope.wonNames.push(lowercaseInput);
