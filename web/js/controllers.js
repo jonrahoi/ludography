@@ -128,7 +128,7 @@ worldMapControllers.controller('worldMapController', ['$scope', '$http',
           .attr("height", height);
 
     $scope.win = "(*ﾟ▽ﾟ)/ﾟ･:*【{{name}}】*:･ﾟ＼(ﾟ▽ﾟ*)";
-    $scope.lose = "{{name}}? ヽ(〃' x ' )ﾉ彡☆ no";
+    $scope.lose = "{{name}}? ヽ(〃' x ' )ﾉ彡☆ no no no no no";
 
     $scope.taunts = taunts;
 
@@ -178,6 +178,7 @@ worldMapControllers.controller('worldMapController', ['$scope', '$http',
             .style('stroke-width', 0.5);
 
         // Taunts
+        /* 
         for (x=0; x < taunts.length; x++){
             var delay = 1000 * x,
                 taunt = taunts[x];
@@ -188,6 +189,7 @@ worldMapControllers.controller('worldMapController', ['$scope', '$http',
                 });
             }, taunt, delay);
         }
+        */
 
     });
     
