@@ -8,7 +8,13 @@
     </head>
 
     <body ng-controller="worldMapController">
-        <div id="guyName" ng-bind-template="{{guyName}}">Loading...</div>
+        <div id="masthead" class="w50 pos-r l-25">
+            <div class="pos-r h30">
+                <span id="guyName" class="pos-a l-0" ng-bind-template="{{guyName}}">Loading...</span>
+                <span id="currentScore" class="pos-a r-0" ng-bind-template="{{currentScore}}/160">0/160</span>
+            </div>
+            <input id="answerInput" class="bgYellow p10 w100" ng-model="country" placeholder="{{placeholder}}" />
+        </div>
     </body>
 
     <!-- libs -->

@@ -55,6 +55,13 @@ worldMapControllers.controller('worldMapController', ['$scope', '$http',
           .attr("width", width)
           .attr("height", height);
 
+    var taunts = ["( ≧Д≦) ","o(-`д´- ｡) ","((╬ಠิ﹏ಠิ))","(；￣Д￣） ","ಠ_ರೃ ","(」゜ロ゜)」","(;¬_¬) ","凸(｀0´)凸 ","(*｀へ´*)","（；¬＿¬) ","-`д´- ","(*≧m≦*)","(｡+･`ω･´) ","｡゜(｀Д´)゜｡ ","(/ﾟДﾟ)/","(*￣m￣) ","( •̀ω•́ )σ ","(＃｀д´)ﾉ","(>人<) ","( ꒪Д꒪)ノ ","(#ಠQಠ#)","(¬_¬) ","(　ﾟДﾟ)＜!! ","(‡▼益▼)","(¬､¬) ","( ಠ ಠ ) ","(´･益･｀*)","(¬▂¬) ","(･｀ｪ´･)つ ","(´Д｀)","(⋋▂⋌) ","(,,#ﾟДﾟ) ","(҂⌣̀_⌣́)","＼(｀0´)／ ","(； ｀ｪ´ ；)b三b ","(>_<)","ヽ(｀⌒´メ)ノ ","(；¬д¬) ","（＞д＜）","ヽ(●-`Д´-)ノ ","（;≧皿≦） ","(¬д¬。)","ヽ༼ ಠ益ಠ ༽ﾉ ","(((p(>o<)q))) ","（≧▼≦；)","(≧σ≦) ","(◣_◢) ","(ᇂ∀ᇂ╬)","(╬ﾟ◥益◤ﾟ) ","(ू˃̣̣̣̣̣̣︿˂̣̣̣̣̣̣ ू) ","(ノ≧┏Д┓≦)ノ","hurry up","(`ヘ´)","（´・ω・｀）","（ ´Д｀）","（　ﾟДﾟ）","why no text lol"," ┐('～`；)┌ ","（´∀｀）","（　´_ゝ`）"," Σ(゜д゜;)","(*´Д`)","(─▽─)","(ﾟ∀ﾟ)"];
+
+    // Used in the template
+    $scope.guyName = "Go!!!!!!!";
+    $scope.placeholder = "typing typing typing typing typing typing typing";
+    $scope.currentScore = 0;
+
     svg.append("path")
         .datum(graticule)
         .attr("class", "graticule")
@@ -76,6 +83,17 @@ worldMapControllers.controller('worldMapController', ['$scope', '$http',
             .style('stroke', 'white')
             .style('stroke-width', 1);
 
+        for (x=0; x < taunts.length; x++){
+          var delay = 1000 * x,
+              taunt = taunts[x];
+
+          MakeTimeoutCall(function(n) {
+              $scope.$apply(function() {
+                $scope.guyName = n;
+              });
+          }, taunt, delay);
+        }
+
         // Set timed functions for coloring the map and showing the country name
         for (x=0; x< features.length; x++){
           var feature = features[x],
@@ -85,6 +103,7 @@ worldMapControllers.controller('worldMapController', ['$scope', '$http',
 
           guy = document.getElementById(name.replace(/\s+/g, ''));
 
+          /*
           d3.select(guy).transition().delay(delay)
              .style("fill", random_color("hsl"));
 
@@ -96,6 +115,7 @@ worldMapControllers.controller('worldMapController', ['$scope', '$http',
                 $scope.guyName = splitCamel(n);
               });
           }, name, delay);
+          */
 
         }
     });

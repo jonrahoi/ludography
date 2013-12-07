@@ -16,8 +16,67 @@
 }
 
 #guyName{
-	width: 100%;
-	font-family: Consolas, monaco, monospace;
-	font-size: 200%;
+	font-size: 100%;
+	overflow: hidden;
+}
+
+#answerInput {
+	border: 0 none;
+	font-size: 2em;
+}
+
+
+body {
 	text-align: center;
+	font-family: Consolas, monaco, monospace;
+}
+
+/* CSS API */
+
+.p10 {
+	padding: 10px;
+}
+
+.w50 {
+	width: 50%;
+}
+
+.w100 {
+	width: 100%;
+}
+
+.h30 {
+	height: 30px;
+}
+
+.pos-r {
+	position: relative;
+}
+
+.pos-a {
+	position: absolute;
+}
+
+.l-0 {
+	left: 0;
+}
+
+.l-25 {
+	left: 25%;
+}
+
+.r-0 {
+	right: 0;
+}
+
+.bgYellow {
+	background-color: #FDFFD1;
+}
+
+.red {
+  color: #FF0000;
+}
+
+.green {
+  color: #0DFF00;
 }
