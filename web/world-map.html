@@ -7,13 +7,17 @@
 
     </head>
 
-    <body ng-controller="worldMapController">
-        <div id="masthead" class="w50 pos-r l-25">
-            <div class="pos-r h30">
-                <span id="guyName" class="pos-a l-0" ng-bind-template="{{guyName}}">Loading...</span>
-                <span id="currentScore" class="pos-a r-0" ng-bind-template="{{currentScore}}/160">0/160</span>
+    <body ng-controller="worldMapController" class="p0 m0">
+        <div id="masthead" class="p10">
+            <div id="controls" class="w50 pos-r l-25">
+                <div class="pos-r h30">
+                    <span id="guyName" class="pos-a l-0 {{guyMsgAnimClass}}" ng-bind-template="{{guyName}}">Loading...</span>
+                    <span id="currentScore" class="pos-a r-0 {{scoreMsgAnimClass}}" ng-bind-template="{{score}}/244">0/244</span>
+                </div>
+                <form ng-submit="handleAnswer(answer)">
+                    <input id="answerInput" class="bgYellow p10 w100" ng-model="answer" placeholder="_________________________〆(・ｪ・*)" />
+                </form>
             </div>
-            <input id="answerInput" class="bgYellow p10 w100" ng-model="country" placeholder="{{placeholder}}" />
         </div>
     </body>
 

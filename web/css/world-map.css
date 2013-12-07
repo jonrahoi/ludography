@@ -1,3 +1,10 @@
+body {
+	text-align: center;
+	font-family: Consolas, monaco, monospace;
+	background-color: #BBDDFF;
+	overflow: hidden;
+}
+
 .graticule {
 	fill: none;
 	stroke: #777
@@ -15,6 +22,20 @@
 	stroke-width: .5px;
 }
 
+#masthead {
+	width: 100%;
+	background-color: White;
+	background-color: rgba(255,255,255,0.5);
+	animation: gameplayTime 300s;
+	position: fixed;
+	bottom: 0;
+}
+
+@keyframes gameplayTime
+{
+	100% {background-color: Black; color: White;}
+}
+
 #guyName{
 	font-size: 100%;
 	overflow: hidden;
@@ -25,13 +46,32 @@
 	font-size: 2em;
 }
 
-
-body {
-	text-align: center;
-	font-family: Consolas, monaco, monospace;
+.loseMsg {
+	background-color: #FF0000;
+	animation: winLoseMsgAnim 1s;
 }
 
+.winMsg {
+  	background-color: #0DFF00;
+  	animation: winLoseMsgAnim 1s;
+}
+
+@keyframes winLoseMsgAnim
+{
+	0%   {padding: 0 30px; color: White;}
+	100% {padding: 0; background:none; color: Black;}
+}
+
+
 /* CSS API */
+
+.p0 {
+	padding: 0;
+}
+
+.m0 {
+	margin: 0;
+}
 
 .p10 {
 	padding: 10px;
@@ -71,12 +111,4 @@ body {
 
 .bgYellow {
 	background-color: #FDFFD1;
-}
-
-.red {
-  color: #FF0000;
-}
-
-.green {
-  color: #0DFF00;
 }
