@@ -60,12 +60,13 @@ worldMapControllers.controller('worldMapController', ['$scope', '$http',
         .attr("class", "graticule")
         .attr("d", path);
 
-
-    d3.json("data/gistfile1.json", function(error, world) {
+    $http.get('data/gistfile1.json').success(function(world) {
         console.log("have world object");
-        console.log(error);
         console.log(world);
         
+        var features = world.features;
+
+        // Draw the initial map
         svg.selectAll('path')
             .data(world.features)
             .enter().append('path')
@@ -74,15 +75,15 @@ worldMapControllers.controller('worldMapController', ['$scope', '$http',
             .style('fill', 'gray')
             .style('stroke', 'white')
             .style('stroke-width', 1);
-        
-        var names = ["","Albania","Algeria","Samoa","Andorra","Angola","AntiguaandBarbuda","Azerbaijan","Argentina","Australia","Austria","Bahamas,The","Bahrain","Bangladesh","Armenia","Barbados","Belgium","Bermuda","Bhutan","Bolivia","BosniaandHerzegovina","Botswana","BouvetIsland","Brazil","Belize","BritishIndianOceanTerritory","SolomonIslands","BritishVirginIslands","Brunei","Bulgaria","Burma","Burundi","Belarus","Cambodia","Cameroon","Canada","CapeVerde","CaymanIslands","CentralAfricanRepublic","SriLanka","Chad","Chile","China","Taiwan","ChristmasIsland","Cocos(Keeling)Islands","Colombia","Comoros","Mayotte","Congo,Republicofthe","Congo,DemocraticRepublicofthe","CookIslands","CostaRica","Croatia","Cuba","Cyprus","CzechRepublic","Benin","Denmark","Dominica","DominicanRepublic","Ecuador","ElSalvador","EquatorialGuinea","Ethiopia","Eritrea","Estonia","FaroeIslands","FalklandIslands(IslasMalvinas)","SouthGeorgiaSouthSandwichIslands","Fiji","Finland","AlandIslands","France","FrenchGuiana","FrenchPolynesia","FrenchSouthernandAntarcticLands","Djibouti","Gabon","Georgia","Gambia,The","Palestine","Germany","Ghana","Gibraltar","Kiribati","Greece","Greenland","Grenada","Guadeloupe","Guam","Guatemala","Guinea","Guyana","Haiti","HeardIslandandMcDonaldIslands","HolySee(VaticanCity)","Honduras","HongKong","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel","Italy","Coted'Ivoire","Jamaica","Japan","Kazakhstan","Jordan","Kenya","Korea,North","Korea,South","Kuwait","Kyrgyzstan","Laos","Lebanon","Lesotho","Latvia","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Macau","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Martinique","Mauritania","Mauritius","Mexico","Monaco","Mongolia","Moldova","Montenegro","Montserrat","Morocco","Mozambique","Oman","Namibia","Nauru","Nepal","Netherlands","NetherlandsAntilles","Aruba","NewCaledonia","Vanuatu","NewZealand","Nicaragua","Niger","Nigeria","Niue","NorfolkIsland","Norway","NorthernMarianaIslands","Micronesia,FederatedStatesof","MarshallIslands","Palau","Pakistan","Panama","PapuaNewGuinea","Paraguay","Peru","Philippines","PitcairnIslands","Poland","Portugal","Guinea-Bissau","Timor-Leste","PuertoRico","Qatar","Reunion","Romania","Russia","Rwanda","SaintBarthelemy","SaintHelena","SaintKittsandNevis","Anguilla","SaintLucia","SaintMartin","SaintPierreandMiquelon","SaintVincentandtheGrenadines","SanMarino","SaoTomeandPrincipe","SaudiArabia","Senegal","Serbia","Seychelles","SierraLeone","Singapore","Slovakia","Vietnam","Slovenia","Somalia","SouthAfrica","Zimbabwe","Spain","WesternSahara","Sudan","Suriname","Svalbard","Swaziland","Sweden","Switzerland","Syria","Tajikistan","Thailand","Togo","Tokelau","Tonga","TrinidadandTobago","UnitedArabEmirates","Tunisia","Turkey","Turkmenistan","TurksandCaicosIslands","Tuvalu","Uganda","Ukraine","Macedonia","Egypt","UnitedKingdom","Guernsey","Jersey","IsleofMan","Tanzania","UnitedStates","VirginIslands","BurkinaFaso","Uruguay","Uzbekistan","Venezuela","WallisandFutuna","Samoa","Yemen","Zambia"];
-    
-        for (x=0; x< names.length; x++){
-          var name = names[x],
-              delay = 200 * x;
+
+        // Set timed functions for coloring the map and showing the country name
+        for (x=0; x< features.length; x++){
+          var feature = features[x],
+              delay = 200 * x,
+              name = feature.properties.name,
               guy;
 
-          guy = document.getElementById(name);
+          guy = document.getElementById(name.replace(/\s+/g, ''));
 
           d3.select(guy).transition().delay(delay)
              .style("fill", random_color("hsl"));
