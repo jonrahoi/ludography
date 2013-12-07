@@ -57,10 +57,10 @@ worldMapControllers.controller('worldMapController', ['$scope', '$http',
     }
 
     function doAWin(name) {
-        var d3Delay = 500,
-            msgDelay = 1000,
+        var delay = 900,
             guy,
-            message = $scope.win.replace("{{name}}", name);
+            messageTemplate = shuffle($scope.win)[0],
+            message = messageTemplate.replace("{{name}}", name);
 
         // TODO: pause taunting
 
@@ -78,13 +78,13 @@ worldMapControllers.controller('worldMapController', ['$scope', '$http',
                 $scope.guyMsgAnimClass = '';
                 $scope.scoreMsgAnimClass = '';
             });
-        }, null, msgDelay);
+        }, null, delay);
 
         // Fill the country shape
         guy = document.getElementById(getShapeIdForCountryName(name));
 
         d3.select(guy).transition().style("fill", random_color("hsl"));          
-        d3.select(guy).transition().delay(d3Delay).style("fill", earthHex);
+        d3.select(guy).transition().delay(delay).style("fill", earthHex);
 
         // Reset the form
         $scope.answer = "";
@@ -93,9 +93,10 @@ worldMapControllers.controller('worldMapController', ['$scope', '$http',
     }
 
     function doALose(name) {
-        var msgDelay = 1000,
+        var delay = 900,
             guy,
-            message = $scope.lose.replace("{{name}}", name);
+            messageTemplate = shuffle($scope.lose)[0],
+            message = messageTemplate.replace("{{name}}", name);
 
         // TODO: pause taunting
 
@@ -108,7 +109,7 @@ worldMapControllers.controller('worldMapController', ['$scope', '$http',
             $scope.$apply(function() {
                 $scope.guyMsgAnimClass = '';
             });
-        }, null, msgDelay);
+        }, null, delay);
 
         // TODO: resume taunting
     }
@@ -127,8 +128,8 @@ worldMapControllers.controller('worldMapController', ['$scope', '$http',
           .attr("width", width)
           .attr("height", height);
 
-    $scope.win = "(*ﾟ▽ﾟ)/ﾟ･:*【{{name}}】*:･ﾟ＼(ﾟ▽ﾟ*)";
-    $scope.lose = "{{name}}? ヽ(〃' x ' )ﾉ彡☆ no no no no no";
+    $scope.win = ["(*ﾟ▽ﾟ)/ﾟ･:*【{{name}}】*:･ﾟ＼(ﾟ▽ﾟ*)","*ﾟﾛﾟ)*ﾟﾛﾟ)*ﾟﾛﾟ)ﾉ~★{{name}}★~ヽ(ﾟﾛﾟ*(ﾟﾛﾟ*(ﾟﾛﾟ*","(=^･･^)ﾉ {{name}}!!","★⌒☆⌒★〓☆ {{name}} ☆〓★⌒☆⌒★","(▼▼ﾒ)/●~*【{{name}}】*~●＼(▼▼ﾒ)","(ﾉ^^)ﾉ———————※※☆★{{name}}!!★☆"];
+    $scope.lose = ["\"{{name}}\"? ヽ(〃' x ' )ﾉ彡☆ no no no no no", "\"{{name}}\"? (ｏ・_・)ノ”(ノ_<。) ","(*_*、)ヾ(-ω- ) {{name}}"];
 
     $scope.taunts = taunts;
 
