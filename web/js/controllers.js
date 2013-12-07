@@ -7,8 +7,7 @@ var worldMapControllers = angular.module('worldMapControllers', []);
 worldMapControllers.controller('worldMapController', ['$scope', '$http',
   function($scope, $http) {
 
-    var taunts = ["( ≧Д≦)","o(-`д´- ｡) ","((╬ಠิ﹏ಠิ))","(；￣Д￣） ","ಠ_ರೃ ","(」゜ロ゜)」","(;¬_¬) ","凸(｀0´)凸 ","(*｀へ´*)","（；¬＿¬) ","-`д´- ","(*≧m≦*)","(｡+･`ω･´) ","｡゜(｀Д´)゜｡ ","(/ﾟДﾟ)/","(*￣m￣) ","( •̀ω•́ )σ ","(＃｀д´)ﾉ","(>人<) ","( ꒪Д꒪)ノ ","(#ಠQಠ#)","(¬_¬) ","(　ﾟДﾟ)＜!! ","(‡▼益▼)","(¬､¬) ","( ಠ ಠ ) ","(´･益･｀*)","(¬▂¬) ","(･｀ｪ´･)つ ","(´Д｀)","(⋋▂⋌) ","(,,#ﾟДﾟ) ","(҂⌣̀_⌣́)","＼(｀0´)／ ","lol what are you staring at this for?","(； ｀ｪ´ ；)b三b ","(>_<)","ヽ(｀⌒´メ)ノ ","(；¬д¬) ","（＞д＜）","ヽ(●-`Д´-)ノ ","（;≧皿≦） ","(¬д¬。)","ヽ༼ ಠ益ಠ ༽ﾉ ","(((p(>o<)q))) ","（≧▼≦；)","(≧σ≦) ","(◣_◢) ","(ᇂ∀ᇂ╬)","(╬ﾟ◥益◤ﾟ) ","(ू˃̣̣̣̣̣̣︿˂̣̣̣̣̣̣ ू) ","(ノ≧┏Д┓≦)ノ","hurry up","(`ヘ´)","（´・ω・｀）","（ ´Д｀）","（　ﾟДﾟ）"," ┐('～`；)┌ ","（´∀｀）","（　´_ゝ`）"," Σ(゜д゜;)","(*´Д`)","(─▽─)","(ﾟ∀ﾟ)"],
-        earthHex = '#E3ECCE',
+    var earthHex = '#E3ECCE',
         seaHex = '#BBDDFF';
 
     function random_color(format, saturation, lightness){
@@ -62,8 +61,6 @@ worldMapControllers.controller('worldMapController', ['$scope', '$http',
             messageTemplate = shuffle($scope.win)[0],
             message = messageTemplate.replace("{{name}}", name);
 
-        // TODO: pause taunting
-
         // Increment score by one
         $scope.score++;
 
@@ -88,17 +85,24 @@ worldMapControllers.controller('worldMapController', ['$scope', '$http',
 
         // Reset the form
         $scope.answer = "";
-
-        // TODO: resume taunting
     }
 
     function doALose(name) {
-        var delay = 900,
-            guy,
-            messageTemplate = shuffle($scope.lose)[0],
+        var messageTemplate = shuffle($scope.lose)[0],
             message = messageTemplate.replace("{{name}}", name);
 
-        // TODO: pause taunting
+        doARedMessage(message);
+    }
+
+    function doARepeat(name) {
+        var message = $scope.repeat.replace("{{name}}", name);
+
+        doARedMessage(message);
+    }
+
+    function doARedMessage(message) {
+        var delay = 900,
+            guy;
 
         // Change guyName to the losing message
         $scope.guyName = message;
@@ -110,8 +114,6 @@ worldMapControllers.controller('worldMapController', ['$scope', '$http',
                 $scope.guyMsgAnimClass = '';
             });
         }, null, delay);
-
-        // TODO: resume taunting
     }
 
     var width = 960,
@@ -130,8 +132,7 @@ worldMapControllers.controller('worldMapController', ['$scope', '$http',
 
     $scope.win = ["(*ﾟ▽ﾟ)/ﾟ･:*【{{name}}】*:･ﾟ＼(ﾟ▽ﾟ*)","*ﾟﾛﾟ)*ﾟﾛﾟ)*ﾟﾛﾟ)ﾉ~★{{name}}★~ヽ(ﾟﾛﾟ*(ﾟﾛﾟ*(ﾟﾛﾟ*","(=^･･^)ﾉ {{name}}!!","★⌒☆⌒★〓☆ {{name}} ☆〓★⌒☆⌒★","(▼▼ﾒ)/●~*【{{name}}】*~●＼(▼▼ﾒ)","(ﾉ^^)ﾉ———————※※☆★{{name}}!!★☆"];
     $scope.lose = ["\"{{name}}\"? ヽ(〃' x ' )ﾉ彡☆ no no no no no", "\"{{name}}\"? (ｏ・_・)ノ”(ノ_<。) ","(*_*、)ヾ(-ω- ) {{name}}"];
-
-    $scope.taunts = taunts;
+    $scope.repeat = "(ノ-_-)ノ ~┻━┻ {{name}} already done！";
 
     $scope.guyName = "Go!!!!!!!";
     $scope.score = 0;
@@ -146,8 +147,7 @@ worldMapControllers.controller('worldMapController', ['$scope', '$http',
     $http.get('data/gistfile1.json').success(function(world) {
         console.log("have world object");
         
-        var features = world.features,
-            taunts = shuffle($scope.taunts);
+        var features = world.features;
 
         $scope.total = features.length;
 
@@ -155,16 +155,21 @@ worldMapControllers.controller('worldMapController', ['$scope', '$http',
         for (x=0; x< features.length; x++){
             $scope.names.push(features[x].properties.name);
             $scope.lowercaseNames.push(features[x].properties.name.toLowerCase()); // for ease of searching
+            $scope.wonNames = [];
         }
 
         $scope.handleAnswer = function(answer) {
             var lowercaseInput = answer.toLowerCase(),
-                indexOf = $scope.lowercaseNames.indexOf(lowercaseInput);
+                indexOf = $scope.lowercaseNames.indexOf(lowercaseInput),
+                hasAlready = $scope.wonNames.indexOf(lowercaseInput);
 
-            if (indexOf === -1) {
-                doALose(answer);
-            } else {
+            if (indexOf > -1 && hasAlready === -1) {
                 doAWin($scope.names[indexOf]);
+                $scope.wonNames.push(lowercaseInput);
+            } else if (hasAlready > -1) {
+                doARepeat(answer);
+            } else {
+                doALose(answer);
             }
         }
 
@@ -177,20 +182,6 @@ worldMapControllers.controller('worldMapController', ['$scope', '$http',
             .style('fill', '#BBDDFF')
             .style('stroke', 'gray')
             .style('stroke-width', 0.5);
-
-        // Taunts
-        /* 
-        for (x=0; x < taunts.length; x++){
-            var delay = 1000 * x,
-                taunt = taunts[x];
-
-            MakeTimeoutCall(function(n) {
-                $scope.$apply(function() {
-                    $scope.guyName = n;
-                });
-            }, taunt, delay);
-        }
-        */
 
     });
     
