@@ -4,8 +4,8 @@
 
 var worldMapControllers = angular.module('worldMapControllers', []);
 
-worldMapControllers.controller('worldMapController', ['$scope', '$http',
-  function($scope, $http) {
+worldMapControllers.controller('worldMapController', ['$scope', '$http', '$log', '$q',
+  function($scope, $http, $log, $q) {
 
     var earthHex = '#E3ECCE',
         seaHex = '#BBDDFF';
@@ -92,12 +92,17 @@ worldMapControllers.controller('worldMapController', ['$scope', '$http',
             message = messageTemplate.replace("{{name}}", name);
 
         doARedMessage(message);
+
+        // Don't reset the form in case it was a typo
     }
 
     function doARepeat(name) {
-        var message = $scope.repeat.replace("{{name}}", name);
+        var message = $scope.repeat[0].replace("{{name}}", name);
 
         doARedMessage(message);
+
+        // Reset the form
+        $scope.answer = "";
     }
 
     function doARedMessage(message) {
@@ -130,11 +135,7 @@ worldMapControllers.controller('worldMapController', ['$scope', '$http',
           .attr("width", width)
           .attr("height", height);
 
-    $scope.win = ["(*ﾟ▽ﾟ)/ﾟ･:*【{{name}}】*:･ﾟ＼(ﾟ▽ﾟ*)","*ﾟﾛﾟ)*ﾟﾛﾟ)*ﾟﾛﾟ)ﾉ~★{{name}}★~ヽ(ﾟﾛﾟ*(ﾟﾛﾟ*(ﾟﾛﾟ*","(=^･･^)ﾉ {{name}}!!","★⌒☆⌒★〓☆ {{name}} ☆〓★⌒☆⌒★","(▼▼ﾒ)/●~*【{{name}}】*~●＼(▼▼ﾒ)","(ﾉ^^)ﾉ———————※※☆★{{name}}!!★☆"];
-    $scope.lose = ["\"{{name}}\"? ヽ(〃' x ' )ﾉ彡☆ no no no no no", "\"{{name}}\"? (ｏ・_・)ノ”(ノ_<。) ","(*_*、)ヾ(-ω- ) {{name}}"];
-    $scope.repeat = "(ノ-_-)ノ ~┻━┻ {{name}} already done！";
-
-    $scope.guyName = "Go!!!!!!!";
+    // $scope.guyName = "Go!!!!!!!";
     $scope.score = 0;
 
     $scope.names = [], $scope.lowercaseNames = []; // These are later pushed to with the geo data file data
@@ -144,12 +145,20 @@ worldMapControllers.controller('worldMapController', ['$scope', '$http',
         .attr("class", "graticule")
         .attr("d", path);
 
-    $http.get('data/gistfile1.json').success(function(world) {
-        console.log("have world object");
-        
-        var features = world.features;
+    $scope.geodata = $http.get('data/gistfile1.json', {cache: false});
+    $scope.strings = $http.get('data/strings.json', {cache: false});
+    $q.all([$scope.geodata, $scope.strings]).then(function(values) {
+
+        var world = values[0].data,
+            strings = values[1].data,
+            features = world.features;
 
         $scope.total = features.length;
+
+        $scope.win = strings.en.wins;
+        $scope.lose = strings.en.loses;
+        $scope.repeat = strings.en.repeats;
+        $scope.guyName = strings.en.go;
 
         // Construct an array of country names
         for (x=0; x< features.length; x++){
@@ -158,14 +167,14 @@ worldMapControllers.controller('worldMapController', ['$scope', '$http',
             $scope.wonNames = [];
         }
 
+        // Function invoked by Angular whenever the form is submitted
         $scope.handleAnswer = function(answer) {
             var lowercaseInput = answer.toLowerCase(),
                 indexOf = $scope.lowercaseNames.indexOf(lowercaseInput),
                 hasAlready = $scope.wonNames.indexOf(lowercaseInput);
 
             if (answer.length === 0) {
-                // do nothing
-                return;
+                return; // do nothing
             }
 
             if (indexOf > -1 && hasAlready === -1) {
