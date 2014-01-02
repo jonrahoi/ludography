@@ -1,3 +1,10 @@
+body {
+	text-align: center;
+	font-family: Consolas, monaco, monospace;
+	background-color: #BBDDFF;
+	overflow: hidden;
+}
+
 .graticule {
 	fill: none;
 	stroke: #777
@@ -15,9 +22,93 @@
 	stroke-width: .5px;
 }
 
-#guyName{
+#masthead {
 	width: 100%;
-	font-family: Consolas, monaco, monospace;
-	font-size: 200%;
-	text-align: center;
+	background-color: rgba(0,0,0,0.1);
+	animation: gameplayTime 300s;
+	position: fixed;
+	bottom: 0;
+	color: White;
+}
+
+@keyframes gameplayTime
+{
+	100% {background-color: rgba(0,0,0,1);}
+}
+
+#guyName{
+	font-size: 100%;
+	overflow: hidden;
+}
+
+#answerInput {
+	border: 0 none;
+	font-size: 2em;
+}
+
+.loseMsg {
+	background-color: #FF0000;
+	animation: winLoseMsgAnim 1s;
+}
+
+.winMsg {
+  	background-color: #0DFF00;
+  	animation: winLoseMsgAnim 1s;
+}
+
+@keyframes winLoseMsgAnim
+{
+	0%   {padding: 0 30px; color: White;}
+	100% {padding: 0; background:none;}
+}
+
+
+/* CSS API */
+
+.p0 {
+	padding: 0;
+}
+
+.m0 {
+	margin: 0;
+}
+
+.p10 {
+	padding: 10px;
+}
+
+.w50 {
+	width: 50%;
+}
+
+.w100 {
+	width: 100%;
+}
+
+.h30 {
+	height: 30px;
+}
+
+.pos-r {
+	position: relative;
+}
+
+.pos-a {
+	position: absolute;
+}
+
+.l-0 {
+	left: 0;
+}
+
+.l-25 {
+	left: 25%;
+}
+
+.r-0 {
+	right: 0;
+}
+
+.bgYellow {
+	background-color: #FDFFD1;
 }

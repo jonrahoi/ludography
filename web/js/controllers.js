@@ -4,8 +4,11 @@
 
 var worldMapControllers = angular.module('worldMapControllers', []);
 
-worldMapControllers.controller('worldMapController', ['$scope', '$http',
-  function($scope, $http) {
+worldMapControllers.controller('worldMapController', ['$scope', '$http', '$log', '$q',
+  function($scope, $http, $log, $q) {
+
+    var earthHex = '#E3ECCE',
+        seaHex = '#BBDDFF';
 
     function random_color(format, saturation, lightness){
       var rint = Math.round(0xffffff * Math.random()),
@@ -41,6 +44,83 @@ worldMapControllers.controller('worldMapController', ['$scope', '$http',
       setTimeout(function() {fn.call(null, data);}, timeout);
     }
 
+    //+ Jonas Raoni Soares Silva
+    //@ http://jsfromhell.com/array/shuffle [v1.0]
+    function shuffle(o){ //v1.0
+        for(var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+        return o;
+    }
+
+    function getShapeIdForCountryName(i){
+        return i.replace(/\s+/g, '');
+    }
+
+    function doAWin(name) {
+        var delay = 900,
+            guy,
+            messageTemplate = shuffle($scope.win)[0],
+            message = messageTemplate.replace("{{name}}", name);
+
+        // Increment score by one
+        $scope.score++;
+
+        // Change guyName to the winning message
+        $scope.guyName = message;
+
+        // Add winMsg class to guyName and score div, remove it a second later
+        $scope.guyMsgAnimClass = 'winMsg';
+        $scope.scoreMsgAnimClass = 'winMsg';
+        MakeTimeoutCall(function(n){
+            $scope.$apply(function() {
+                $scope.guyMsgAnimClass = '';
+                $scope.scoreMsgAnimClass = '';
+            });
+        }, null, delay);
+
+        // Fill the country shape
+        guy = document.getElementById(getShapeIdForCountryName(name));
+
+        d3.select(guy).transition().style("fill", random_color("hsl"));          
+        d3.select(guy).transition().delay(delay).style("fill", earthHex);
+
+        // Reset the form
+        $scope.answer = "";
+    }
+
+    function doALose(name) {
+        var messageTemplate = shuffle($scope.lose)[0],
+            message = messageTemplate.replace("{{name}}", name);
+
+        doARedMessage(message);
+
+        // Don't reset the form in case it was a typo
+    }
+
+    function doARepeat(name) {
+        var message = $scope.repeat[0].replace("{{name}}", name);
+
+        doARedMessage(message);
+
+        // Reset the form
+        $scope.answer = "";
+    }
+
+    function doARedMessage(message) {
+        var delay = 900,
+            guy;
+
+        // Change guyName to the losing message
+        $scope.guyName = message;
+
+        // Add loseMsg class to guyName, remove it a second later
+        $scope.guyMsgAnimClass = 'loseMsg';
+        MakeTimeoutCall(function(n){
+            $scope.$apply(function() {
+                $scope.guyMsgAnimClass = '';
+            });
+        }, null, delay);
+    }
+
     var width = 960,
         height = 960,
         guy = "",
@@ -55,49 +135,68 @@ worldMapControllers.controller('worldMapController', ['$scope', '$http',
           .attr("width", width)
           .attr("height", height);
 
+    // $scope.guyName = "Go!!!!!!!";
+    $scope.score = 0;
+
+    $scope.names = [], $scope.lowercaseNames = []; // These are later pushed to with the geo data file data
+
     svg.append("path")
         .datum(graticule)
         .attr("class", "graticule")
         .attr("d", path);
 
-    $http.get('data/gistfile1.json').success(function(world) {
-        console.log("have world object");
-        console.log(world);
-        
-        var features = world.features;
+    $scope.geodata = $http.get('data/gistfile1.json', {cache: false});
+    $scope.strings = $http.get('data/strings.json', {cache: false});
+    $q.all([$scope.geodata, $scope.strings]).then(function(values) {
+
+        var world = values[0].data,
+            strings = values[1].data,
+            features = world.features;
+
+        $scope.total = features.length;
+
+        $scope.win = strings.en.wins;
+        $scope.lose = strings.en.loses;
+        $scope.repeat = strings.en.repeats;
+        $scope.guyName = strings.en.go;
+
+        // Construct an array of country names
+        for (x=0; x< features.length; x++){
+            $scope.names.push(features[x].properties.name);
+            $scope.lowercaseNames.push(features[x].properties.name.toLowerCase()); // for ease of searching
+            $scope.wonNames = [];
+        }
+
+        // Function invoked by Angular whenever the form is submitted
+        $scope.handleAnswer = function(answer) {
+            var lowercaseInput = answer.toLowerCase(),
+                indexOf = $scope.lowercaseNames.indexOf(lowercaseInput),
+                hasAlready = $scope.wonNames.indexOf(lowercaseInput);
+
+            if (answer.length === 0) {
+                return; // do nothing
+            }
+
+            if (indexOf > -1 && hasAlready === -1) {
+                doAWin($scope.names[indexOf]);
+                $scope.wonNames.push(lowercaseInput);
+            } else if (hasAlready > -1) {
+                doARepeat(answer);
+            } else {
+                doALose(answer);
+            }
+        }
 
         // Draw the initial map
         svg.selectAll('path')
             .data(world.features)
             .enter().append('path')
             .attr('d', d3.geo.path().projection(projection))
-            .attr('id', function(d){return d.properties.name.replace(/\s+/g, '')})
-            .style('fill', 'gray')
-            .style('stroke', 'white')
-            .style('stroke-width', 1);
+            .attr('id', function(d){return getShapeIdForCountryName(d.properties.name);})
+            .style('fill', '#BBDDFF')
+            .style('stroke', 'gray')
+            .style('stroke-width', 0.5);
 
-        // Set timed functions for coloring the map and showing the country name
-        for (x=0; x< features.length; x++){
-          var feature = features[x],
-              delay = 200 * x,
-              name = feature.properties.name,
-              guy;
-
-          guy = document.getElementById(name.replace(/\s+/g, ''));
-
-          d3.select(guy).transition().delay(delay)
-             .style("fill", random_color("hsl"));
-
-          MakeTimeoutCall(function(n){
-              // This callback is later run outside of Angular -- while it has access
-              // to $scope.guyName, setting it normally doesn't trigger Angular's data bindings.
-              // Run inside $scope.$apply to get around this
-              $scope.$apply(function() {
-                $scope.guyName = splitCamel(n);
-              });
-          }, name, delay);
-
-        }
     });
     
     d3.select(self.frameElement).style("height", height + "px");
