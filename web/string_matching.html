@@ -9,61 +9,8 @@
 		<hr>
 		<h1>Hello {{countryName}}!</h1>
 		</div>
-		<script type=text/javascript>
-			var countries = ["brazil", "china", "usa"];
-			var score = {};
+		<script src="js/stringtest.js">
 			
-			for (var x=0; x<countries.length; x++){
-				score[countries[x]] = false;
-			}
-			
-			var cnt = "Brazil";
-			
-			cnt = cnt.toLowerCase();
-			
-			if (countries.indexOf(cnt) > -1) {
-				score[cnt] = true;
-			}
-			
-			//validate the input = spell check, fuzzy matching (levenshtein distance)
-			
-			console.log(score);
-
-		//compute the edit distance between the two strings
-		
-			function getEditDistance (a, b){
-				if(a.length == 0) return b.length;
-				if(b.length == 0) return a.length;
-				
-				var matrix = [];
-				
-				//increment along the first column of each row	
-				var i;
-				for(i=0; i<= a.length; i++){
-					matrix[i] = [i];
-				}
-				
-				var j;
-				for(j=0; j<=a.length; j++){
-					matrix[0][j] = j;
-				}
-				
-				//Fill in the rest of the matrix
-				for(i = 1; i <= b.length; i++){
-					for(j = 1; j <= a.length; j++){
-						if(b.charAt(i-1) == a.charAt(j-1)){
-							matrix[i][j] = matrix[i-1][j-1];
-						} else {
-							matrix[i][j] = Math.min(matrix[i-1][j-1] + 1, //substitution
-													Math.min(matrix[i][j-1] + 1, //insertion
-															 matrix[i-1][j] + 1));
-							
-							}
-						}
-					}
-					
-					return matrix[b.length][a.length];
-			};
 		</script>
 			
 	</body>

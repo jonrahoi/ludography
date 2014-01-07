@@ -167,6 +167,8 @@ worldMapControllers.controller('worldMapController', ['$scope', '$http', '$log',
             $scope.wonNames = [];
         }
 
+        console.log(JSON.stringify($scope.lowercaseNames));
+
         // Function invoked by Angular whenever the form is submitted
         $scope.handleAnswer = function(answer) {
             var lowercaseInput = answer.toLowerCase(),
