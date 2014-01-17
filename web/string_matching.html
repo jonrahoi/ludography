@@ -1,17 +1,20 @@
 <html ng-app>
 	<head>
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.3/angular.min.js"></script>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+		<script type="text/javascript" src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 	</head>
 	<body>
 		<div>
-		<label>Country:</label>
-		<input type="text" ng-model="countryName" placeholder="Enter country name here">
-		<hr>
-		<h1>Hello {{countryName}}!</h1>
+			<form id="cinput">
+				<label>Country:</label>
+				<input type="text" ng-model="countryName" placeholder="Enter country name here" id="user-input" />
+				<input type="submit" onclick="input();" />
+			</form>
 		</div>
-		<script src="js/stringtest.js">
-			
-		</script>
+		<div class="scoreboard"></div>
+		<div class="results"></div>
+		<script src="js/stringtest.js"></script>
 			
 	</body>
 </html>
