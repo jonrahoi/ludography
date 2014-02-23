@@ -4,8 +4,8 @@
 
 var worldMapControllers = angular.module('worldMapControllers', []);
 
-worldMapControllers.controller('worldMapController', ['$scope', '$http', '$log', '$q',
-  function($scope, $http, $log, $q) {
+worldMapControllers.controller('worldMapController', ['$scope', '$http', '$log', '$q', 'd3',
+  function($scope, $http, $log, $q, d3) {
 
     var earthHex = '#E3ECCE',
         seaHex = '#BBDDFF';
@@ -51,8 +51,8 @@ worldMapControllers.controller('worldMapController', ['$scope', '$http', '$log',
         return o;
     }
 
-    function getShapeIdForCountryName(i){
-        return i.replace(/\s+/g, '');
+    $scope.getShapeIdForCountryName = function(i){
+        return i.replace(/\s+/g, '').toLowerCase();
     }
 
     function doAWin(name) {
@@ -78,7 +78,7 @@ worldMapControllers.controller('worldMapController', ['$scope', '$http', '$log',
         }, null, delay);
 
         // Fill the country shape
-        guy = document.getElementById(getShapeIdForCountryName(name));
+        guy = document.getElementById($scope.getShapeIdForCountryName(name));
 
         d3.select(guy).transition().style("fill", random_color("hsl"));          
         d3.select(guy).transition().delay(delay).style("fill", earthHex);
@@ -194,7 +194,7 @@ worldMapControllers.controller('worldMapController', ['$scope', '$http', '$log',
             .data(world.features)
             .enter().append('path')
             .attr('d', d3.geo.path().projection(projection))
-            .attr('id', function(d){return getShapeIdForCountryName(d.properties.name);})
+            .attr('id', function(d){return $scope.getShapeIdForCountryName(d.properties.name);})
             .style('fill', '#BBDDFF')
             .style('stroke', 'gray')
             .style('stroke-width', 0.5);
