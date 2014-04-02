@@ -133,6 +133,8 @@ worldMapControllers.controller('worldMapController', ['$scope', '$http', '$log',
 
         // Reset the form
         $scope.answer = "";
+
+        $scope.loseSound.play();
     }
 
     $scope.doARedMessage = function(message) {
