@@ -20,6 +20,7 @@ worldMapControllers.controller('worldMapController', ['$scope', '$http', '$log',
         svg = d3.select("body").append("svg")
           .attr("width", width)
           .attr("height", height);
+
         
     $scope.gameLength = 300;
     // for testing
@@ -27,6 +28,15 @@ worldMapControllers.controller('worldMapController', ['$scope', '$http', '$log',
     
     $scope.seaHex = '#BBDDFF';
     $scope.earthHex = '#E3ECCE';
+
+    $scope.winSource = 'audio/win.mp3';
+    $scope.winSourceType = 'audio/mpeg';
+    $scope.loseSource = 'audio/lose.mp3';
+    $scope.loseSourceType = 'audio/mpeg';
+
+    $scope.winSound = document.getElementById('winSound');
+    $scope.loseSound = document.getElementById('loseSound');
+
 
     $scope.random_color = function(format, saturation, lightness){
         var rint = Math.round(0xffffff * Math.random()),
@@ -103,6 +113,8 @@ worldMapControllers.controller('worldMapController', ['$scope', '$http', '$log',
 
         // Reset the form
         $scope.answer = "";
+
+        $scope.winSound.play();
     }
 
     $scope.doALose = function(name) {
@@ -111,7 +123,7 @@ worldMapControllers.controller('worldMapController', ['$scope', '$http', '$log',
 
         $scope.doARedMessage(message);
 
-        // Don't reset the form in case it was a typo
+        $scope.loseSound.play();
     }
 
     $scope.doARepeat = function(name) {
