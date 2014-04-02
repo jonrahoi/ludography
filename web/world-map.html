@@ -8,14 +8,21 @@
     </head>
 
     <body ng-controller="worldMapController" class="p0 m0">
-        <div id="masthead" class="p10">
+        <div id="masthead" class="p10 {{mastheadAnimClass}}">
             <div id="controls" class="w50 pos-r l-25">
-                <div class="pos-r h30">
-                    <span id="guyName" class="pos-a l-0 {{guyMsgAnimClass}}" ng-bind-template="{{guyName}}">Loading...</span>
-                    <span id="currentScore" class="pos-a r-0 {{scoreMsgAnimClass}}" ng-bind-template="{{score}}/244">0/244</span>
+                <div class="pos-r h30 {{gameState | displayif:gameStates.inProgress}}">
+                    <span id="hudLeft" class="pos-a l-0 {{guyMsgAnimClass}}" ng-bind-template="{{guyName}}">Loading...</span>
+                    <span id="hudRight" class="pos-a r-0">
+						<span class="{{scoreMsgAnimClass}}" ng-bind-template="{{score}}/{{numCountries}}">0/244</span>
+						<span class="" ng-bind-template="{{secondsLeft}}s">300s</span>
+					</span>
                 </div>
-                <form ng-submit="handleAnswer(answer)">
+                <form ng-submit="handleAnswer(answer)" class="{{gameState | displayif:gameStates.inProgress}}">
                     <input id="answerInput" class="bgYellow p10 w100" ng-model="answer" />
+                </form>
+                <form class="{{gameState | displayif:gameStates.stopped}}">
+					<div ng-bind-template="{{endMessage}}"></div>
+                    <button ng-click="handleStart()" type="button">{{startText}}</button>
                 </form>
             </div>
         </div>
@@ -30,5 +37,6 @@
     <script src="js/app.js"></script>
     <script src="js/controllers.js"></script>
     <script src="js/services.js"></script>
+    <script src="js/filters.js"></script>
 
 </html>

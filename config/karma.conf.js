@@ -8,6 +8,7 @@ module.exports = function(config){
       'web/js/app.js',
       'web/js/services.js',
       'web/js/controllers.js',
+	  'web/js/filters.js',
       'test/unit/*.js'
     ],
 
