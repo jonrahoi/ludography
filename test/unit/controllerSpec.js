@@ -36,18 +36,18 @@ describe('ludography controllers', function() {
   });
   
   describe('handleStart', function() {
-	it('should set various scope variables to get ready for a new game', inject(function($controller) {
-		var scope = {},
-			ctrl = $controller('worldMapController', { $scope: scope, d3: d3Stub });
-		
-		scope.handleStart();
-			
-		expect(scope.score).toBe(0);
-		expect(scope.wonNames.length).toBe(0);
-		expect(scope.secondsLeft).toBe(scope.gameLength);
-		expect(scope.answer).toBe('');
-		expect(scope.gameState).toBe(1);
-	}));
+    it('should set various scope variables to get ready for a new game', inject(function($controller) {
+      var scope = {},
+          ctrl = $controller('worldMapController', { $scope: scope, d3: d3Stub });
+      
+      scope.handleStart();
+          
+      expect(scope.score).toBe(0);
+      expect(scope.wonNames.length).toBe(0);
+      expect(scope.secondsLeft).toBe(scope.gameLength);
+      expect(scope.answer).toBe('');
+      expect(scope.gameState).toBe(1);
+    }));
   });
 
 });

@@ -21,12 +21,12 @@ worldMapControllers.controller('worldMapController', ['$scope', '$http', '$log',
           .attr("width", width)
           .attr("height", height);
         
-	$scope.gameLength = 300;
-	// for testing
-	// $scope.gameLength = 5;
-	
-	$scope.seaHex = '#BBDDFF';
-	$scope.earthHex = '#E3ECCE';
+    $scope.gameLength = 300;
+    // for testing
+    // $scope.gameLength = 5;
+    
+    $scope.seaHex = '#BBDDFF';
+    $scope.earthHex = '#E3ECCE';
 
     $scope.random_color = function(format, saturation, lightness){
         var rint = Math.round(0xffffff * Math.random()),
@@ -140,58 +140,58 @@ worldMapControllers.controller('worldMapController', ['$scope', '$http', '$log',
     }
 
     $scope.handleStart = function() {
-		var map, guys;
-		
-		$scope.score = 0;
-		$scope.wonNames = [];
-		$scope.secondsLeft = $scope.gameLength;
-		$scope.guyName = 'Go!';
-		$scope.answer = '';
-		
-		// Reset the map fill colors
+        var map, guys;
+        
+        $scope.score = 0;
+        $scope.wonNames = [];
+        $scope.secondsLeft = $scope.gameLength;
+        $scope.guyName = 'Go!';
+        $scope.answer = '';
+
+        // Reset the map fill colors
         map = document.getElementById('map');
-		guys = (map != null) ? map.childNodes : [];
-		for (var i=0; i<guys.length; i++) {
-			d3.select(guys[i]).style("fill", $scope.seaHex);
-		}
-		
-		// Set the game end for some time in the future
-		$scope.mastheadAnimClass = 'anim-300s';
+        guys = (map != null) ? map.childNodes : [];
+        for (var i=0; i<guys.length; i++) {
+            d3.select(guys[i]).style("fill", $scope.seaHex);
+        }
+
+        // Set the game end for some time in the future
+        $scope.mastheadAnimClass = 'anim-300s';
         $scope.MakeTimeoutCall(function(n){
             $scope.$apply(function() {
                 $scope.handleEnd();
             });
         }, null, $scope.gameLength * 1000);
-		
-		$scope.countdown = setInterval($scope.handleCountdownTimer, 1000);
-		
-		$scope.gameState = $scope.gameStates.inProgress;
+
+        $scope.countdown = setInterval($scope.handleCountdownTimer, 1000);
+
+        $scope.gameState = $scope.gameStates.inProgress;
     }
-	
-	$scope.handleEnd = function() {
-		$scope.gameState = $scope.gameStates.stopped;
-		$scope.mastheadAnimClass = '';
-		clearInterval($scope.countdown);
-		
-		$scope.endMessage = 'Okay you got ' + $scope.score + ' out of ' + $scope.numCountries + ', which is fine I guess.';
-		$scope.startText = "Start over?";
-	}
-	
-	$scope.handleCountdownTimer = function() {
-		if ($scope.secondsLeft === 0) {
-			clearInterval($scope.countdown);
-		} else {
-			$scope.$apply(function() {
-				$scope.secondsLeft--;
-			});
-		}
-	}
-	
-	$scope.handleOnLoad = function() {
-		$scope.gameState = $scope.gameStates.stopped;
+
+    $scope.handleEnd = function() {
+        $scope.gameState = $scope.gameStates.stopped;
+        $scope.mastheadAnimClass = '';
+        clearInterval($scope.countdown);
+        
+        $scope.endMessage = 'Okay you got ' + $scope.score + ' out of ' + $scope.numCountries + ', which is fine I guess.';
+        $scope.startText = "Start over?";
+    }
+    
+    $scope.handleCountdownTimer = function() {
+        if ($scope.secondsLeft === 0) {
+            clearInterval($scope.countdown);
+        } else {
+            $scope.$apply(function() {
+                $scope.secondsLeft--;
+            });
+        }
+    }
+
+    $scope.handleOnLoad = function() {
+        $scope.gameState = $scope.gameStates.stopped;
         $scope.startText = 'Start -- you have ' + $scope.gameLength + ' seconds';
-	}
-	
+    }
+    
     // Function invoked by Angular whenever the form is submitted
     $scope.handleAnswer = function(answer) {
         var lowercaseInput = answer.toLowerCase(),
@@ -261,7 +261,7 @@ worldMapControllers.controller('worldMapController', ['$scope', '$http', '$log',
             .style('stroke', 'gray')
             .style('stroke-width', 0.5);
 
-		$scope.handleOnLoad();
+        $scope.handleOnLoad();
 
     });
 
