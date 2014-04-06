@@ -25,15 +25,18 @@ body {
 #masthead {
 	width: 100%;
 	background-color: rgba(0,0,0,0.1);
-	animation: gameplayTime 300s;
 	position: fixed;
 	bottom: 0;
 	color: White;
 }
 
+.anim-300s {
+	animation: gameplayTime 300s;
+}
+
 @keyframes gameplayTime
 {
-	100% {background-color: rgba(0,0,0,1);}
+	100% {background-color: rgba(255,0,0,0.1);}
 }
 
 #guyName{
@@ -64,6 +67,10 @@ body {
 
 
 /* CSS API */
+
+.d-n {
+	display: none;
+}
 
 .p0 {
 	padding: 0;
